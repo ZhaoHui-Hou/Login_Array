@@ -1,0 +1,27 @@
+代码:
+	Collection c = new ArrayList();
+	c.add("aa");
+	c.add("bb");
+	c.add("cc");
+
+	System.out.println(c);
+为什么c输出的不是地址值呢？
+	1、Collection c = new ArrayList();
+		这是多态，输出的c的toString()方法，其实就是ArrayList()的toString()方法
+	2、看ArrayList()里面没有toString()方法，因此应该去他的父亲里看
+	3、toString()的源码
+		    public String toString() {
+			Iterator<E> it = iterator();//this.iterator(); 集合本身调用迭代器方法，得到集合迭代器
+			if (! it.hasNext())
+			    return "[]";
+
+			StringBuilder sb = new StringBuilder();
+			sb.append('[');
+			for (;;) {
+			    E e = it.next();
+			    sb.append(e == this ? "(this Collection)" : e);
+			    if (! it.hasNext())
+				return sb.append(']').toString();
+			    sb.append(',').append(' ');
+			}
+		    }
